@@ -122,31 +122,25 @@ def laby(largeur, hauteur, dimension):
     # Premier élement = x , deuxieme = y:
     coordonneCavite = [cellules_cavite[0] % largeur, cellules_cavite[0] // largeur]
 
-
-    
     # On ajoute à la frontiere les voisins de la cavite initiale:
     frontiere = voisins(coordonneCavite[0], coordonneCavite[1], largeur, hauteur)
-    
   
-
+    # Tant que la cavité n'a pas inclus toutes les cellules du labyrinthe:  
     while len(cellules_cavite) != largeur * hauteur:
+        # Choix aléatoire d'une cellule frontière:
         frontiere_aleatoire = frontiere[randint(0, len(frontiere) - 1)]
         x, y = frontiere_aleatoire % largeur, frontiere_aleatoire // largeur
 
         voisins_cavite = []
 
-        if y > 0 and (x + (y - 1) * largeur) in cellules_cavite:
-            voisins_cavite.append(x + (y - 1) * largeur)
-        if y < hauteur - 1 and (x + (y + 1) * largeur) in cellules_cavite:
-            voisins_cavite.append(x + (y + 1) * largeur)
-        if x > 0 and (x - 1 + y * largeur) in cellules_cavite:
-            voisins_cavite.append(x - 1 + y * largeur)
-        if x < largeur - 1 and (x + 1 + y * largeur) in cellules_cavite:
-            voisins_cavite.append(x + 1 + y * largeur)
+        # Ajout des cellules voisines de la cavité dans la liste des voisins
+        voisins_cavite = voisins(x, y, largeur, hauteur)
+
 
         if voisins_cavite:
             voisin = voisins_cavite[randint(0, len(voisins_cavite) - 1)]
 
+            # On cherche le mur que la frontiere a en commun avec le voisin:
             if voisin == frontiere_aleatoire + 1:
                 retirer(murs_verticaux, y * (largeur + 1) + x + 1)
             elif voisin == frontiere_aleatoire - 1:
@@ -159,14 +153,14 @@ def laby(largeur, hauteur, dimension):
             ajouter(cellules_cavite, frontiere_aleatoire)
             retirer(frontiere, frontiere_aleatoire)
 
-            # Directions relatives des voisins
+            # Directions relatives des voisins(gauche,droite,bas,haut)
             voisins_relatifs = [(-1, 0), (1, 0), (0, -1), (0, 1)]
 
             for voisin_x, voisin_y in voisins_relatifs:
                 new_x, new_y = x + voisin_x, y + voisin_y
                 new_cell = new_x + new_y * largeur
 
-                # Vérification si la nouvelle cellule doit etre ajoutée a la fronti
+                # Vérification si la nouvelle cellule doit etre ajoutée a la frontière
                 if 0 <= new_x < largeur and 0 <= new_y < hauteur and new_cell not in cellules_cavite and new_cell not in frontiere:
                     ajouter(frontiere, new_cell)
 
@@ -175,7 +169,7 @@ def laby(largeur, hauteur, dimension):
 
     print(murs_horizontaux,murs_verticaux)
     
-
+    """
    #Représentation du labyrinthe:
     setScreenMode((largeur*dimension)+1,(hauteur*dimension)+1)
     
@@ -203,7 +197,7 @@ def laby(largeur, hauteur, dimension):
             if contient(murs_verticaux,x+y*(largeur+1)):
                 for i in range(dimension):
                     set_pixel(x*dimension,y*dimension+i,"#000")
-
+"""
                     
                     
     
